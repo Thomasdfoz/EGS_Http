@@ -1,3 +1,4 @@
+using EGS.Http;
 using EGS.Utils;
 using System.Collections.Generic;
 using UnityEditor;
