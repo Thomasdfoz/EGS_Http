@@ -69,7 +69,21 @@ namespace EGS.Http
                     return new TResponse { code = (int)request.responseCode, message = request.error };
                 }
 
-                return JsonUtility.FromJson<TResponse>(request.downloadHandler.text);
+                try
+                {
+                    TResponse result = JsonUtility.FromJson<TResponse>(request.downloadHandler.text);
+
+                    // O JsonUtility pode retornar um objeto com campos nulos se não houver match.
+                    // Aqui você poderia adicionar uma lógica de validação se necessário.
+
+                    return result;
+                }
+                catch (Exception jsonEx)
+                {
+                    // Se der erro aqui, o problema é o seu DTO ou o formato do JSON vindo do servidor
+                    Debug.LogError($"[JSON MISMATCH] Falha ao converter resposta de {url}.\nErro: {jsonEx.Message}\nJSON Recebido: {request.downloadHandler.text}");
+                    return new TResponse { code = 998, message = "JSON Conversion Error" };
+                }
             }
             catch (Exception e)
             {
