@@ -69,9 +69,16 @@ namespace EGS.Http
                     return new TResponse { code = (int)request.responseCode, message = request.error };
                 }
 
+                string rawJson = request.downloadHandler.text;
                 try
                 {
-                    TResponse result = JsonUtility.FromJson<TResponse>(request.downloadHandler.text);
+
+                    if (rawJson.StartsWith("["))
+                    {
+                        rawJson = "{\"data\":" + rawJson + "}";
+                    }
+
+                    TResponse result = JsonUtility.FromJson<TResponse>(rawJson);
 
                     result.code = (int)request.responseCode;
                     result.message = request.error;
@@ -81,7 +88,7 @@ namespace EGS.Http
                 catch (Exception jsonEx)
                 {
                     // Se der erro aqui, o problema é o seu DTO ou o formato do JSON vindo do servidor
-                    Debug.LogError($"[JSON MISMATCH] Falha ao converter resposta de {url}.\nErro: {jsonEx.Message}\nJSON Recebido: {request.downloadHandler.text}");
+                    Debug.LogError($"[JSON MISMATCH] Falha ao converter resposta de {url}.\nErro: {jsonEx.Message}\nJSON Recebido: {rawJson}");
                     return new TResponse { code = 998, message = "JSON Conversion Error" };
                 }
             }
