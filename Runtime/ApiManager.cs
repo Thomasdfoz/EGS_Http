@@ -73,8 +73,8 @@ namespace EGS.Http
                 {
                     TResponse result = JsonUtility.FromJson<TResponse>(request.downloadHandler.text);
 
-                    // O JsonUtility pode retornar um objeto com campos nulos se não houver match.
-                    // Aqui você poderia adicionar uma lógica de validação se necessário.
+                    result.code = (int)request.responseCode;
+                    result.message = request.error;
 
                     return result;
                 }
