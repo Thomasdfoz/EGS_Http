@@ -3,7 +3,7 @@ using System;
 namespace EGS.Http
 {
     [Serializable]
-    public abstract class BaseResponse
+    public class BaseResponse
     {
         public int code;
         public string message;
