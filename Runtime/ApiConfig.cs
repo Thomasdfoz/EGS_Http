@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGS.Http
 {
-    [CreateAssetMenu(fileName = "ApiConfig", menuName = "EGS/Http/ApiConfig")]
+    [CreateAssetMenu(fileName = "ApiConfig", menuName = "EGS/ApiConfig")]
     public class ApiConfig : ScriptableObject
     {
         [Header("Network Settings")]
